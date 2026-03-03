@@ -1,4 +1,5 @@
 
-export function imagePath(categoryName: string, imageName: string): string {
-  return `/images/products/${categoryName}/${imageName}`;
+
+export function imagePath(imageName: string): string {
+  return `img/${imageName}`;
 }
