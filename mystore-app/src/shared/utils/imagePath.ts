@@ -1,5 +1,5 @@
 
 
 export function imagePath(imageName: string): string {
-  return `img/${imageName}`;
+  return `/img/${imageName}`;
 }

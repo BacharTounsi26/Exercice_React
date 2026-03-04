@@ -1,4 +1,4 @@
-/* import { Provider } from "react-redux";
+ import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { store } from "./store";
 import { router } from "./routes";
@@ -9,4 +9,4 @@ export function AppProviders() {
       <RouterProvider router={router} />
     </Provider>
   );
-}*/
+}
