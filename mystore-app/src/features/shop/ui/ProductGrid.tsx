@@ -1,21 +1,3 @@
-/*import ProductCard from "./ProductCard";
-import type { Product } from "@/shared/types/Product";
-
-type Props = {
-  products: Product[];
-};
-
-export default function ProductGrid({ products }: Props) {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  );
-}*/
-
-// src/features/shop/ui/ProductGrid.tsx
 
 import { memo }           from "react";
 import ProductCard        from "./ProductCard";
@@ -62,7 +44,7 @@ const ProductGrid = memo(function ProductGrid({ products, isLoading, error }: Pr
           </svg>
         </div>
         <p className="font-semibold text-slate-700 mb-1">{error}</p>
-        <p className="text-sm text-slate-400">Vérifiez que json-server tourne sur le port 3001.</p>
+        <p className="text-sm text-slate-400">Check that json-server is running on port 3001.</p>
       </div>
     );
   }
@@ -76,8 +58,8 @@ const ProductGrid = memo(function ProductGrid({ products, isLoading, error }: Pr
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" />
           </svg>
         </div>
-        <p className="font-semibold text-slate-700 mb-1">Aucun produit trouvé</p>
-        <p className="text-sm text-slate-400">Modifiez votre recherche ou vos filtres.</p>
+        <p className="font-semibold text-slate-700 mb-1">No products found</p>
+        <p className="text-sm text-slate-400">Try changing your search or filters.</p>
       </div>
     );
   }

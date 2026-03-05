@@ -1,9 +1,8 @@
-// src/features/cart/ui/CartTable.tsx
-// Tableau principal du panier : en-têtes + lignes produits + bouton Checkout.
 
 import { memo }             from "react";
 import { useNavigate }      from "react-router-dom";
 import CartItemRow          from "./CartItem";
+import Button               from "@/shared/ui/Button";
 import type { CartItem }    from "@/shared/types/CartItem";
 
 interface CartTableProps {
@@ -26,7 +25,7 @@ const CartTable = memo(function CartTable({ items, isSyncing, onUpdate, onRemove
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
           </svg>
-          <span className="text-xs text-indigo-600 font-medium">Mise à jour en cours…</span>
+          <span className="text-xs text-indigo-600 font-medium">Updating...</span>
         </div>
       )}
 
@@ -40,13 +39,13 @@ const CartTable = memo(function CartTable({ items, isSyncing, onUpdate, onRemove
                 Photo
               </th>
               <th className="py-3 px-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                Produit
+                Product
               </th>
               <th className="py-3 px-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                Prix
+                Price
               </th>
               <th className="py-3 px-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                Quantité
+                Quantity
               </th>
               <th className="py-3 px-3 text-left text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                 Total
@@ -69,13 +68,13 @@ const CartTable = memo(function CartTable({ items, isSyncing, onUpdate, onRemove
 
       {/* ── Bouton Checkout ──────────────────────────────────────────── */}
       <div className="flex justify-end px-4 py-4 border-t border-slate-100 bg-slate-50/50">
-        <button
+        <Button
           onClick={() => navigate("/checkout")}
           disabled={isSyncing}
+          variant="primary"
+          size="xl"
+          radius="xl"
           className="
-            px-8 py-3 rounded-xl font-semibold text-sm text-white
-            bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800
-            disabled:bg-slate-300 disabled:cursor-not-allowed
             transition-colors shadow-md hover:shadow-lg
             flex items-center gap-2
           "
@@ -84,8 +83,8 @@ const CartTable = memo(function CartTable({ items, isSyncing, onUpdate, onRemove
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
               d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
-          Passer la commande
-        </button>
+          Place order
+        </Button>
       </div>
     </div>
   );

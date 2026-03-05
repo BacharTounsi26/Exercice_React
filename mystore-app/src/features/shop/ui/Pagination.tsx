@@ -1,60 +1,6 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*type Props = {
-  page: number;
-  totalPages: number;
-  onChange: (page: number) => void;
-};
-
-export default function Pagination({
-  page,
-  totalPages,
-  onChange,
-}: Props) {
-  return (
-    <div className="flex justify-center items-center gap-4 mt-12">
-      <button
-        disabled={page === 1}
-        onClick={() => onChange(page - 1)}
-        className="px-4 py-2 border rounded disabled:opacity-40"
-      >
-        Previous
-      </button>
-
-      <span>
-        Page {page} / {totalPages}
-      </span>
-
-      <button
-        disabled={page === totalPages}
-        onClick={() => onChange(page + 1)}
-        className="px-4 py-2 border rounded disabled:opacity-40"
-      >
-        Next
-      </button>
-    </div>
-  );
-}*/
-
-// src/features/shop/ui/Pagination.tsx
-
 import { memo } from "react";
+import Button from "@/shared/ui/Button";
 
 interface PaginationProps {
   currentPage:  number;
@@ -83,19 +29,46 @@ const Pagination = memo(function Pagination({ currentPage, totalPages, onPageCha
 
   return (
     <nav className="flex items-center justify-center gap-1.5 mt-10 flex-wrap" aria-label="Pagination">
-      <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}
-        aria-label="Précédent" className={`${base} ${currentPage === 1 ? disabled : normal}`}>‹</button>
+      <Button
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        aria-label="Previous"
+        variant="plain"
+        size="none"
+        radius="lg"
+        className={`${base} ${currentPage === 1 ? disabled : normal}`}
+      >
+        ‹
+      </Button>
 
       {buildRange(currentPage, totalPages).map((p, i) =>
         p === null
           ? <span key={`e${i}`} className="min-w-[38px] h-9 flex items-center justify-center text-slate-400 select-none">…</span>
-          : <button key={p} onClick={() => onPageChange(p)}
-              aria-label={`Page ${p}`} aria-current={p === currentPage ? "page" : undefined}
-              className={`${base} ${p === currentPage ? active : normal}`}>{p}</button>
+          : <Button
+              key={p}
+              onClick={() => onPageChange(p)}
+              aria-label={`Page ${p}`}
+              aria-current={p === currentPage ? "page" : undefined}
+              variant="plain"
+              size="none"
+              radius="lg"
+              className={`${base} ${p === currentPage ? active : normal}`}
+            >
+              {p}
+            </Button>
       )}
 
-      <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}
-        aria-label="Suivant" className={`${base} ${currentPage === totalPages ? disabled : normal}`}>›</button>
+      <Button
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        aria-label="Next"
+        variant="plain"
+        size="none"
+        radius="lg"
+        className={`${base} ${currentPage === totalPages ? disabled : normal}`}
+      >
+        ›
+      </Button>
     </nav>
   );
 });

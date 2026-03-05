@@ -16,7 +16,7 @@ export function useCategories() {
         const data = await fetchCategories();
         setCategories(data);
       } catch {
-        setError("Impossible de charger les catégories");
+        setError("Unable to load categories");
       } finally {
         setLoading(false);
       }

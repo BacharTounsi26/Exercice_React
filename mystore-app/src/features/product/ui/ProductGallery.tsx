@@ -1,6 +1,7 @@
-// src/features/product/ui/ProductGallery.tsx
+
 import { memo, useState } from "react";
 import { productImagePath } from "@/shared/utils/productImagePath";
+import Button from "@/shared/ui/Button";
 
 interface Props {
   imageName:    string;
@@ -37,9 +38,12 @@ const ProductGallery = memo(function ProductGallery({ imageName, categoryName, p
       {!imgError && (
         <div className="flex gap-3">
           {Array.from({ length: thumbCount }, (_, i) => (
-            <button
+            <Button
               key={i}
               onClick={() => setActiveIndex(i)}
+              variant="plain"
+              size="none"
+              radius="xl"
               className={[
                 "w-20 h-20 rounded-xl border-2 flex items-center justify-center p-2 bg-white transition-all duration-200",
                 activeIndex === i ? "border-indigo-500 shadow-md" : "border-slate-200 hover:border-indigo-300",
@@ -52,7 +56,7 @@ const ProductGallery = memo(function ProductGallery({ imageName, categoryName, p
                 className="max-h-full object-contain"
                 onError={() => setImgError(true)}
               />
-            </button>
+            </Button>
           ))}
         </div>
       )}

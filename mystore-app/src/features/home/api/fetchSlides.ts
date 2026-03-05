@@ -1,4 +1,4 @@
-const API = "http://localhost:3001";
+import { API_URL } from "@/shared/utils/apiBase";
 
 export type Slide = {
   id: number;
@@ -8,7 +8,7 @@ export type Slide = {
 };
 
 export async function fetchSlides(): Promise<Slide[]> {
-  const res = await fetch(`${API}/slides`);
+  const res = await fetch(`${API_URL}/slides`);
   if (!res.ok) throw new Error("Failed to load slides");
   return res.json();
 }

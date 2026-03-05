@@ -1,6 +1,3 @@
-// src/features/cart/CartPage.tsx
-// Page orchestratrice — ZÉRO logique, ZÉRO fetch direct.
-// Toute la logique est dans useCart(). Ce composant assemble uniquement l'affichage.
 
 import { useEffect, useState }    from "react";
 import { useCart }                 from "./hooks/useCart";
@@ -46,14 +43,14 @@ export default function CartPage() {
 
       {/* ── Fil d'Ariane ─────────────────────────────────────────────────── */}
       <Breadcrumb
-        category={{ id: "cart", name: "Panier" }}
+        category={{ id: "cart", name: "Cart" }}
         className="mb-6"
       />
 
       {/* ── Titre + Compteur ─────────────────────────────────────────────── */}
       <div className="flex items-center gap-3 mb-8">
         <h1 className="font-display text-2xl md:text-3xl font-bold text-slate-800">
-          Mon Panier
+          My Cart
         </h1>
         {!isEmpty && (
           <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold">

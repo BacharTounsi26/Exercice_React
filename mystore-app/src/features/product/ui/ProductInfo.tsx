@@ -1,7 +1,8 @@
-// src/features/product/ui/ProductInfo.tsx
+
 import { memo, useState } from "react";
 import { useProductInfo } from "@/shared/hooks/useProductInfo";
 import type { Product }   from "@/shared/types/Product";
+import Button             from "@/shared/ui/Button";
 
 interface Props {
   product:      Product;
@@ -58,45 +59,54 @@ const ProductInfo = memo(function ProductInfo({ product, onAddToCart }: Props) {
       <div className="flex items-center gap-2">
         <span className={`inline-block w-2 h-2 rounded-full ${inStock ? "bg-emerald-500" : "bg-red-400"}`} />
         <span className={`text-sm font-medium ${inStock ? "text-emerald-700" : "text-red-600"}`}>
-          {inStock ? "En stock — Livraison rapide" : "Rupture de stock"}
+          {inStock ? "In stock — Fast delivery" : "Out of stock"}
         </span>
       </div>
 
       {/* Quantité + CTA */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex items-center border border-slate-300 rounded-xl overflow-hidden">
-          <button
+          <Button
             onClick={() => setQty((q) => Math.max(1, q - 1))}
             disabled={qty <= 1}
+            variant="plain"
+            size="none"
+            radius="none"
             className="w-10 h-11 flex items-center justify-center text-slate-600 hover:bg-slate-50 disabled:text-slate-300 transition-colors"
-          >−</button>
+          >−</Button>
           <span className="w-10 text-center font-semibold text-slate-800 text-sm">{qty}</span>
-          <button
+          <Button
             onClick={() => setQty((q) => Math.min(99, q + 1))}
             disabled={qty >= 99}
+            variant="plain"
+            size="none"
+            radius="none"
             className="w-10 h-11 flex items-center justify-center text-slate-600 hover:bg-slate-50 disabled:text-slate-300 transition-colors"
-          >+</button>
+          >+</Button>
         </div>
 
-        <button
+        <Button
           onClick={() => onAddToCart?.(product, qty)}
           disabled={!inStock}
+          variant="primary"
+          size="none"
+          radius="xl"
           className="flex-1 min-w-[180px] h-11 rounded-xl font-semibold text-sm bg-indigo-600 text-white hover:bg-indigo-700 active:bg-indigo-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed transition-colors shadow-md flex items-center justify-center gap-2"
         >
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2ZM7.16 14.26l.03.01L19 15a1 1 0 0 0 .98-.8l1.71-8.58A1 1 0 0 0 20.71 4H6.21l-.38-2H2v2h2l2.6 12.01a3.001 3.001 0 1 0 5.8.99h4.8a3.001 3.001 0 1 0 0-2H10.4a3 3 0 0 0-3.24-2.74Z" />
           </svg>
-          {inStock ? "Ajouter au panier" : "Indisponible"}
-        </button>
+          {inStock ? "Add to cart" : "Unavailable"}
+        </Button>
       </div>
 
       {/* Infos livraison */}
       <div className="grid grid-cols-2 gap-3 pt-1">
         {[
-          { icon: "🚚", label: "Livraison gratuite", sub: "Dès 50€ d'achat" },
-          { icon: "↩️", label: "Retour 30 jours",    sub: "Satisfait ou remboursé" },
-          { icon: "🔒", label: "Paiement sécurisé",  sub: "Cryptage SSL" },
-          { icon: "⭐", label: "Garantie 2 ans",     sub: "Constructeur" },
+          { icon: "🚚", label: "Free shipping", sub: "From 50€ purchase" },
+          { icon: "↩️", label: "30-day returns", sub: "Money-back guarantee" },
+          { icon: "🔒", label: "Secure payment", sub: "SSL encryption" },
+          { icon: "⭐", label: "2-year warranty", sub: "Manufacturer" },
         ].map(({ icon, label, sub }) => (
           <div key={label} className="flex items-start gap-2 bg-slate-50 rounded-xl p-3">
             <span className="text-lg mt-0.5">{icon}</span>

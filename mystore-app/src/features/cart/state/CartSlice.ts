@@ -1,24 +1,11 @@
-// src/features/cart/state/cartSlice.ts
-// Slice Redux Toolkit — toute la logique du panier est ici.
-//
-// STRATÉGIE DE PERSISTANCE :
-//   - L'id du panier est sauvegardé dans localStorage ("cart_id")
-//   - Au démarrage (initCart), on tente de récupérer le panier existant
-//   - Chaque mutation (add/update/remove/clear) est auto-sauvegardée côté serveur
-//
-// CALCULS :
-//   - subTotal = somme(item.price * item.qty)
-//   - tax      = subTotal * TAX_RATE
-//   - total    = subTotal + tax
 
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
 import { createCart }  from "../api/createCart";
 import { getCart }     from "../api/getCart";
 import { updateCart }  from "../api/updateCart";
 import { deleteCart }  from "../api/deleteCart";
-import type { Cart }  from "@/shared/types/Cart";
-import type { CartItem }  from "@/shared/types/CartItem";
+import type { Cart } from "@/shared/types/Cart";
+import type { CartItem } from "@/shared/types/CartItem";
 import type { Product } from "@/shared/types/Product";
 
 const TAX_RATE    = 0.20;       // 20%
@@ -41,9 +28,9 @@ function loadCartId(): string | null {
   try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
 }
 
-function clearCartId() {
+/*function clearCartId() {
   try { localStorage.removeItem(STORAGE_KEY); } catch {}
-}
+}*/
 
 // ── State ──────────────────────────────────────────────────────────────────
 
@@ -155,6 +142,16 @@ const cartSlice = createSlice({
     /**
      * removeItem — supprime un produit du panier.
      */
+    /**
+     * resetCart — vide le state Redux après checkout (le serveur a déjà été nettoyé).
+     */
+    resetCart(state) {
+      state.cart   = null;
+      state.status = "idle";
+      state.error  = null;
+      try { localStorage.removeItem("cart_id"); } catch {}
+    },
+
     removeItem(state, action: PayloadAction<number>) {
       if (!state.cart) return;
       state.cart.items = state.cart.items.filter((i) => i.id !== action.payload);
@@ -172,7 +169,7 @@ const cartSlice = createSlice({
       })
       .addCase(initCart.rejected, (state, action) => {
         state.status = "error";
-        state.error  = action.error.message ?? "Erreur d'initialisation du panier.";
+        state.error  = action.error.message ?? "Cart initialization error.";
       });
 
     // syncCart
@@ -184,7 +181,7 @@ const cartSlice = createSlice({
       })
       .addCase(syncCart.rejected,  (state, action) => {
         state.status = "error";
-        state.error  = action.error.message ?? "Erreur de synchronisation.";
+        state.error  = action.error.message ?? "Synchronization error.";
       });
 
     // clearCartAsync
@@ -196,10 +193,10 @@ const cartSlice = createSlice({
       })
       .addCase(clearCartAsync.rejected,  (state, action) => {
         state.status = "error";
-        state.error  = action.error.message ?? "Erreur lors du vidage du panier.";
+        state.error  = action.error.message ?? "Error while clearing the cart.";
       });
   },
 });
 
-export const { addItem, updateQty, removeItem } = cartSlice.actions;
+export const { addItem, updateQty, removeItem, resetCart } = cartSlice.actions;
 export default cartSlice.reducer;

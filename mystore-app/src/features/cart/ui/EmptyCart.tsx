@@ -1,5 +1,3 @@
-// src/features/cart/ui/EmptyCart.tsx
-// Affichage quand le panier est vide.
 
 import { memo }         from "react";
 import { Link }         from "react-router-dom";
@@ -14,10 +12,10 @@ const EmptyCart = memo(function EmptyCart() {
         </svg>
       </div>
       <h2 className="font-display text-2xl font-bold text-slate-700 mb-2">
-        Votre panier est vide
+        Your cart is empty
       </h2>
       <p className="text-slate-400 text-sm mb-8 max-w-xs">
-        Vous n'avez encore rien ajouté. Parcourez notre catalogue et trouvez votre prochain achat.
+        You haven't added anything yet. Browse our catalog and find your next purchase.
       </p>
       <Link
         to="/shop"
@@ -26,7 +24,7 @@ const EmptyCart = memo(function EmptyCart() {
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
-        Découvrir le catalogue
+        Discover the catalog
       </Link>
     </div>
   );

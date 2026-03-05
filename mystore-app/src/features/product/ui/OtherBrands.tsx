@@ -1,8 +1,5 @@
-// src/features/product/ui/OtherBrands.tsx
-// Sidebar gauche sur la page produit : liste les autres marques (hors celle du produit affiché).
-// Chaque marque est un lien vers /shop/:categoryId.
 
-import { memo }          from "react";
+import { memo, useMemo }          from "react";
 import { Link }          from "react-router-dom";
 import { imagePath }     from "@/shared/utils/imagePath";
 import type { Category } from "@/shared/types/Category";
@@ -19,7 +16,10 @@ const OtherBrands = memo(function OtherBrands({
   categories,
   currentCategoryId,
 }: OtherBrandsProps) {
-  const others = categories.filter((c) => c.id !== currentCategoryId);
+  const others = useMemo(
+    () => categories.filter((c) => c.id !== currentCategoryId),
+    [categories, currentCategoryId]
+  );
 
   if (others.length === 0) return null;
 

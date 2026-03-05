@@ -1,6 +1,3 @@
-// src/features/cart/hooks/useCart.ts
-// Façade entre les composants et Redux.
-// Les composants n'importent jamais directement les actions ou sélecteurs.
 
 import { useCallback }           from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/useAppStore";
@@ -9,7 +6,7 @@ import {
   updateQty,
   removeItem,
   clearCartAsync,
-}                                from "../state/CartSlice";
+}                                from "../state/cartSlice";
 import {
   selectCartItems,
   selectCartCount,

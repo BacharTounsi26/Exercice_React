@@ -1,16 +1,20 @@
 import type { Slide } from "../api/fetchSlides";
 import { imagePath } from "@/shared/utils/imagePath";
 import { useHeroSlider } from "../hooks/useHeroSlider";
+import Button from "@/shared/ui/Button";
 
 type Props = {
   slides: Slide[];
 };
 
 export default function HeroSlider({ slides }: Props) {
+  
+  const { current, next, prev } = useHeroSlider(slides.length);
+  
   if (slides.length === 0)
     return <div className="h-64 bg-slate-200 animate-pulse rounded"></div>;
 
-  const { current, next, prev } = useHeroSlider(slides.length);
+  
 
   return (
     <div className="relative w-full overflow-hidden rounded-lg">
@@ -32,20 +36,26 @@ export default function HeroSlider({ slides }: Props) {
       </div>
 
       {/* Prev */}
-      <button
+      <Button
         onClick={prev}
+        variant="plain"
+        size="none"
+        radius="md"
         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 px-3 py-1 rounded"
       >
         ‹
-      </button>
+      </Button>
 
       {/* Next */}
-      <button
+      <Button
         onClick={next}
+        variant="plain"
+        size="none"
+        radius="md"
         className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 px-3 py-1 rounded"
       >
         ›
-      </button>
+      </Button>
     </div>
   );
 }

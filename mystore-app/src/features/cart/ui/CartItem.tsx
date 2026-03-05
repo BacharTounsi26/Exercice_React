@@ -1,9 +1,8 @@
-// src/features/cart/ui/CartItem.tsx
-// Ligne produit dans le tableau du panier.
 
 import { memo, useCallback }   from "react";
 import { Link }                from "react-router-dom";
 import { productImagePath }    from "@/shared/utils/productImagePath";
+import Button                  from "@/shared/ui/Button";
 import type { CartItem as CartItemType } from "@/shared/types/CartItem";
 
 interface CartItemProps {
@@ -32,14 +31,17 @@ const CartItem = memo(function CartItem({ item, onUpdate, onRemove, isSyncing }:
 
       {/* ── Supprimer ─────────────────────────────────────────────────── */}
       <td className="py-4 px-3 w-10">
-        <button
+        <Button
           onClick={() => onRemove(item.id)}
           disabled={isSyncing}
-          aria-label="Supprimer"
+          aria-label="Remove"
+          variant="dangerGhost"
+          size="none"
+          radius="full"
           className="w-7 h-7 rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-40"
         >
           ×
-        </button>
+        </Button>
       </td>
 
       {/* ── Image ─────────────────────────────────────────────────────── */}
@@ -78,25 +80,31 @@ const CartItem = memo(function CartItem({ item, onUpdate, onRemove, isSyncing }:
       {/* ── Quantité ──────────────────────────────────────────────────── */}
       <td className="py-4 px-3">
         <div className="flex items-center border border-slate-200 rounded-xl overflow-hidden w-fit">
-          <button
+          <Button
             onClick={dec}
             disabled={item.qty <= 1 || isSyncing}
-            aria-label="Diminuer"
+            aria-label="Decrease"
+            variant="plain"
+            size="none"
+            radius="none"
             className="w-9 h-9 flex items-center justify-center text-slate-500 hover:bg-indigo-50 hover:text-indigo-600 disabled:text-slate-300 transition-colors text-lg font-light"
           >
             −
-          </button>
+          </Button>
           <span className="w-10 text-center text-sm font-semibold text-slate-800 select-none">
             {item.qty}
           </span>
-          <button
+          <Button
             onClick={inc}
             disabled={item.qty >= 99 || isSyncing}
-            aria-label="Augmenter"
+            aria-label="Increase"
+            variant="plain"
+            size="none"
+            radius="none"
             className="w-9 h-9 flex items-center justify-center text-slate-500 hover:bg-indigo-50 hover:text-indigo-600 disabled:text-slate-300 transition-colors text-lg font-light"
           >
             +
-          </button>
+          </Button>
         </div>
       </td>
 

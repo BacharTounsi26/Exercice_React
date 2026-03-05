@@ -1,10 +1,9 @@
-// src/features/product/api/fetchProductById.ts
-import type { Product } from "@/shared/types/Product";
 
-const API = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
+import type { Product } from "@/shared/types/Product";
+import { API_URL } from "@/shared/utils/apiBase";
 
 export async function fetchProductById(id: string): Promise<Product> {
-  const res = await fetch(`${API}/products/${id}`);
-  if (!res.ok) throw new Error(`Produit #${id} introuvable (${res.status})`);
+  const res = await fetch(`${API_URL}/products/${id}`);
+  if (!res.ok) throw new Error(`Product #${id} not found (${res.status})`);
   return res.json();
 }

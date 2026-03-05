@@ -1,9 +1,7 @@
-// src/features/cart/api/deleteCart.ts
-// DELETE /carts/:id — supprime le panier du serveur.
 
-const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
+import { API_URL } from "@/shared/utils/apiBase";
 
 export async function deleteCart(id: string): Promise<void> {
-  const res = await fetch(`${BASE}/carts/${id}`, { method: "DELETE" });
+  const res = await fetch(`${API_URL}/carts/${id}`, { method: "DELETE" });
   if (!res.ok) throw new Error(`deleteCart: ${res.status}`);
 }

@@ -1,5 +1,4 @@
-// src/features/cart/ui/CartSummary.tsx
-// Résumé du panier : sous-total, taxe, total + section "Vous aimerez aussi".
+
 
 import { memo }              from "react";
 import { Link }              from "react-router-dom";
@@ -21,7 +20,6 @@ const CartSummary = memo(function CartSummary({
   subTotal,
   tax,
   total,
-  isSyncing,
   crossSells = [],
 }: CartSummaryProps) {
   return (
@@ -31,36 +29,36 @@ const CartSummary = memo(function CartSummary({
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
           <h2 className="font-display text-base font-bold text-slate-800 uppercase tracking-wide">
-            Récapitulatif
+            Summary
           </h2>
         </div>
 
         <div className="px-5 py-4 flex flex-col gap-3">
           <div className="flex justify-between items-center text-sm">
-            <span className="text-slate-500">Sous-total</span>
+            <span className="text-slate-500">Subtotal</span>
             <span className="font-semibold text-slate-800">{subTotal.toFixed(2)} €</span>
           </div>
 
           <div className="flex justify-between items-center text-sm">
-            <span className="text-slate-500">TVA (20%)</span>
+            <span className="text-slate-500">Tax (20%)</span>
             <span className="font-semibold text-slate-800">{tax.toFixed(2)} €</span>
           </div>
 
           <div className="flex justify-between items-center text-sm">
-            <span className="text-slate-500">Livraison</span>
+            <span className="text-slate-500">Shipping</span>
             <span className="text-emerald-600 font-semibold text-xs uppercase tracking-wide">
-              {subTotal >= 50 ? "Gratuite 🎉" : `${(5.99).toFixed(2)} €`}
+              {subTotal >= 50 ? "Free 🎉" : `${(5.99).toFixed(2)} €`}
             </span>
           </div>
 
           {subTotal > 0 && subTotal < 50 && (
             <div className="text-[11px] text-slate-400 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2">
-              Plus que <strong className="text-amber-700">{(50 - subTotal).toFixed(2)} €</strong> pour la livraison gratuite !
+              Only <strong className="text-amber-700">{(50 - subTotal).toFixed(2)} €</strong> left for free shipping!
             </div>
           )}
 
           <div className="border-t border-slate-100 pt-3 flex justify-between items-center">
-            <span className="font-bold text-slate-800">Total TTC</span>
+            <span className="font-bold text-slate-800">Total (incl. tax)</span>
             <span className="font-bold text-xl text-indigo-600">{total.toFixed(2)} €</span>
           </div>
         </div>
@@ -71,7 +69,7 @@ const CartSummary = memo(function CartSummary({
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
             <h2 className="font-display text-base font-bold text-slate-800 uppercase tracking-wide">
-              Vous aimerez aussi…
+              You may also like...
             </h2>
           </div>
 

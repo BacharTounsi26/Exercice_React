@@ -1,9 +1,6 @@
-// src/features/cart/api/createCart.ts
-// POST /carts — crée un nouveau panier vide et retourne son id.
 
 import type { Cart } from "@/shared/types/Cart";
-
-const BASE = import.meta.env.VITE_API_URL ?? "http://localhost:3001";
+import { API_URL } from "@/shared/utils/apiBase";
 
 export async function createCart(): Promise<Cart> {
   const newCart: Omit<Cart, "id"> = {
@@ -13,7 +10,7 @@ export async function createCart(): Promise<Cart> {
     total:    0,
   };
 
-  const res = await fetch(`${BASE}/carts`, {
+  const res = await fetch(`${API_URL}/carts`, {
     method:  "POST",
     headers: { "Content-Type": "application/json" },
     body:    JSON.stringify(newCart),

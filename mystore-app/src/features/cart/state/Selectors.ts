@@ -1,6 +1,3 @@
-// src/features/cart/state/selectors.ts
-// Sélecteurs mémorisés — évitent les re-renders inutiles.
-// Chaque sélecteur ne recalcule que si la slice cart change.
 
 import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "@/app/store";

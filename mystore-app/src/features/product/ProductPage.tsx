@@ -1,8 +1,9 @@
-// src/features/product/ProductPage.tsx
+
 import { useParams }              from "react-router-dom";
-import { useEffect, useState }    from "react";
+import { useEffect, useMemo, useState }    from "react";
 import { useProduct }             from "./hooks/useProduct";
 import { useRecentlyViewed }      from "@/shared/hooks/useRecentlyViewed";
+import { useCart }                from "@/features/cart/hooks/useCart";
 import { fetchCategories }        from "@/features/layout/api/fetchCategories";
 import Breadcrumb                 from "@/features/layout/ui/Breadcrumb";
 import ProductGallery             from "./ui/ProductGallery";
@@ -10,9 +11,7 @@ import ProductInfo                from "./ui/ProductInfo";
 import ProductDescription         from "./ui/ProductDescription";
 import ProductWidgetSection       from "@/features/home/ui/ProductWidgetSection";
 import OtherBrands                from "./ui/OtherBrands";
-import { useAppDispatch }            from "@/shared/hooks/useAppStore";
-import { addItem }                    from "@/features/cart/state/CartSlice";
-import type { Product }               from "@/shared/types/Product";
+import type { Product }           from "@/shared/types/Product";
 import type { Category }          from "@/shared/types/Category";
 
 function ProductSkeleton() {
@@ -47,46 +46,39 @@ function ProductError({ message }: { message: string }) {
             d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <h2 className="text-xl font-bold text-slate-700 mb-2">Produit introuvable</h2>
+      <h2 className="text-xl font-bold text-slate-700 mb-2">Product not found</h2>
       <p className="text-slate-500 text-sm">{message}</p>
     </div>
   );
 }
 
 export default function ProductPage() {
-  const { id }                                   = useParams<{ id: string }>();
-  const { product, isLoading, error }            = useProduct(id);
-  const dispatch                                = useAppDispatch();
+  const { id }                               = useParams<{ id: string }>();
+  const { product, isLoading, error }        = useProduct(id);
   const { products: recentlyViewed, addProduct } = useRecentlyViewed();
-  const [categories, setCategories]              = useState<Category[]>([]);
+  const { add }                              = useCart();   // ← useCart au lieu de dispatch brut
+  const [categories, setCategories]          = useState<Category[]>([]);
 
-  // Enregistre le produit visité après le rendu initial
-  // Le délai garantit que recentlyViewed est lu depuis localStorage AVANT l'écriture
   useEffect(() => {
     if (!product) return;
     const timer = setTimeout(() => addProduct(product), 50);
     return () => clearTimeout(timer);
   }, [product?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Charge les catégories pour Other Brands
   useEffect(() => {
     fetchCategories().then(setCategories).catch(() => {});
   }, []);
 
   if (isLoading) return <ProductSkeleton />;
-  if (error || !product) return <ProductError message={error ?? "Produit introuvable."} />;
+  if (error || !product) return <ProductError message={error ?? "Product not found."} />;
 
-  // Exclure le produit courant — on affiche les autres visites précédentes
-  const recentFiltered = recentlyViewed.filter((p) => p.id !== product.id);
-
-  function handleAddToCart(p: Product, qty: number) {
-    console.log("Add to cart:", p.id, "×", qty);
-    dispatch(addItem({ product: p, qty }));
-  }
+  const recentFiltered = useMemo(
+    () => recentlyViewed.filter((p) => p.id !== product.id),
+    [recentlyViewed, product.id]
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-
       <Breadcrumb
         category={{ id: product.categoryId, name: product.categoryName }}
         product={product.name}
@@ -94,51 +86,35 @@ export default function ProductPage() {
       />
 
       <div className="flex gap-6 items-start">
-
-        {/* Sidebar — desktop uniquement */}
-        <aside className="hidden lg:flex flex-col gap-4 w-56 flex-shrink-0 sticky top-4">
-
-          {/* Recently Viewed — même composant que HomePage */}
-          <ProductWidgetSection
-            title="Recently Viewed"
-            products={recentFiltered}
-          />
-
-          {/* Other Brands */}
-          <OtherBrands
-            categories={categories}
-            currentCategoryId={product.categoryId}
-          />
+        <aside className="hidden lg:flex flex-col gap-4 w-52 flex-shrink-0 sticky top-4">
+          {recentFiltered.length > 0 && (
+            <ProductWidgetSection title="Recently Viewed" products={recentFiltered} />
+          )}
+          <OtherBrands categories={categories} currentCategoryId={product.categoryId} />
         </aside>
 
-        {/* Contenu principal */}
         <div className="flex-1 min-w-0">
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
             <ProductGallery
               imageName={product.imageName}
               categoryName={product.categoryName}
               productName={product.name}
             />
+            {/* onAddToCart appelle useCart().add() — attend que le panier soit prêt */}
             <ProductInfo
               product={product}
-              onAddToCart={handleAddToCart}
+              onAddToCart={(p: Product, qty: number) => add(p, qty)}
             />
           </div>
 
           <ProductDescription product={product} />
 
-          {/* Recently Viewed mobile */}
           {recentFiltered.length > 0 && (
             <div className="lg:hidden mt-8">
-              <ProductWidgetSection
-                title="Recently Viewed"
-                products={recentFiltered}
-              />
+              <ProductWidgetSection title="Recently Viewed" products={recentFiltered} />
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-// src/shared/hooks/useRecentlyViewed.ts
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import type { Product } from "@/shared/types/Product";
 

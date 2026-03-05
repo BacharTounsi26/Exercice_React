@@ -1,12 +1,11 @@
 import type { Category } from "src/shared/types/Category";
+import { API_URL } from "@/shared/utils/apiBase";
 
-
-const API_BASE = "http://localhost:3001";
 
 export async function fetchCategories(): Promise<Category[]> {
-  const res = await fetch(`${API_BASE}/categories`);
+  const res = await fetch(`${API_URL}/categories`);
   if (!res.ok) {
-    throw new Error("Erreur lors du chargement des catégories");
+    throw new Error("Error loading categories");
   }
   return res.json() as Promise<Category[]>;
 }

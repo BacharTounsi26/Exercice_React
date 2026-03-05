@@ -1,4 +1,4 @@
-// src/features/product/hooks/useProduct.ts
+
 import { useState, useEffect } from "react";
 import { fetchProductById }    from "../api/fetchProductById";
 import type { Product }        from "@/shared/types/Product";
@@ -10,7 +10,7 @@ export function useProduct(id: string | undefined) {
 
   useEffect(() => {
     if (!id) {
-      setError("Identifiant produit manquant.");
+      setError("Missing product identifier.");
       setIsLoading(false);
       return;
     }
@@ -19,7 +19,7 @@ export function useProduct(id: string | undefined) {
     setError(null);
     fetchProductById(id)
       .then((data) => { if (!cancelled) setProduct(data); })
-      .catch((e)   => { if (!cancelled) setError(e instanceof Error ? e.message : "Erreur."); })
+      .catch((e)   => { if (!cancelled) setError(e instanceof Error ? e.message : "Error."); })
       .finally(()  => { if (!cancelled) setIsLoading(false); });
     return () => { cancelled = true; };
   }, [id]);

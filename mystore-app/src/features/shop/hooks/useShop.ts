@@ -1,69 +1,4 @@
 
-
-
-// src/features/shop/hooks/useShop.ts
-/*import { useEffect, useState } from "react";
-import { fetchProducts, type FetchProductsParams } from "../api/fetchProducts";
-import type { Product } from "@/shared/types/Product";
-
-export type ShopFilters = {
-  q?: string;
-  categoryId?: string; // <-- on utilise ça
-  page: number;
-  limit: number;
-  sort?: string;
-  order?: "asc" | "desc";
-};
-
-export function useShop(initial?: Partial<ShopFilters>) {
-  const [filters, setFilters] = useState<ShopFilters>({
-    page: 1,
-    limit: 12,
-    ...initial,
-  });
-  const [products, setProducts] = useState<Product[]>([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let alive = true;
-    setLoading(true);
-    setError(null);
-
-    const params: FetchProductsParams = {
-      q: filters.q,
-      categoryId: filters.categoryId,  // <-- ici
-      _page: filters.page,
-      _limit: filters.limit,
-      _sort: filters.sort,
-      _order: filters.order,
-    };
-
-    fetchProducts(params)
-      .then(({ data, totalCount }) => {
-        if (!alive) return;
-        setProducts(data);
-        setTotalCount(totalCount);
-      })
-      .catch(() => alive && setError("Impossible de charger les produits"))
-      .finally(() => alive && setLoading(false));
-
-    return () => {
-      alive = false;
-    };
-  }, [filters]);
-
-  const updateFilters = (updates: Partial<ShopFilters>) => {
-    setFilters((f) => ({ ...f, ...updates, page: 1 })); // reset page à 1 si filtre change
-  };
-
-  return { products, totalCount, loading, error, filters, updateFilters };
-}*/
-// src/features/shop/hooks/useShop.ts
-// Centralise toute la logique du feature shop.
-// ShopPage ne fait QUE de l'affichage — aucun fetch, aucun useEffect.
-
 import { useState, useEffect, useCallback } from "react";
 import { fetchProducts }                    from "../api/fetchProducts";
 import type { Product }                     from "@/shared/types/Product";
@@ -116,7 +51,7 @@ export function useShop(categoryId: string | undefined, initialQuery = "") {
       setProducts(result.products);
       setTotalCount(result.totalCount);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Erreur inattendue.");
+      setError(e instanceof Error ? e.message : "Unexpected error.");
       setProducts([]);
       setTotalCount(0);
     } finally {

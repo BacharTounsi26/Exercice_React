@@ -1,8 +1,3 @@
-// src/features/layout/ui/RootLayout.tsx
-// Enveloppe globale présente sur TOUTES les pages.
-// ─ Charge les catégories une seule fois (pas de re-fetch au changement de page)
-// ─ Détecte la catégorie active depuis l'URL pour surligner la Navbar
-// ─ Synchronise la recherche globale du Header avec ShopPage via URL
 
 import { Outlet, useLocation }  from "react-router-dom";
 import { useState, useEffect }  from "react";
