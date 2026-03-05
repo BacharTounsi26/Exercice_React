@@ -11,6 +11,7 @@ interface CartSummaryProps {
   total:         number;
   isSyncing:     boolean;
   crossSells?:   Product[];   // produits suggérés
+  crossSellsLoading?: boolean;
 }
 
 const PLACEHOLDER =
@@ -21,6 +22,7 @@ const CartSummary = memo(function CartSummary({
   tax,
   total,
   crossSells = [],
+  crossSellsLoading = false,
 }: CartSummaryProps) {
   return (
     <div className="flex flex-col gap-5">
@@ -65,7 +67,7 @@ const CartSummary = memo(function CartSummary({
       </div>
 
       {/* ── Vous aimerez aussi ───────────────────────────────────────── */}
-      {crossSells.length > 0 && (
+      {(crossSellsLoading || crossSells.length > 0) && (
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-slate-100 bg-slate-50">
             <h2 className="font-display text-base font-bold text-slate-800 uppercase tracking-wide">
@@ -74,7 +76,13 @@ const CartSummary = memo(function CartSummary({
           </div>
 
           <div className="p-4 flex flex-col gap-3">
-            {crossSells.map((p) => (
+            {crossSellsLoading && Array.from({ length: 3 }, (_, i) => (
+              <div key={`sk-${i}`} className="h-20 rounded-xl bg-slate-100 animate-pulse" />
+            ))}
+            {!crossSellsLoading && crossSells.length === 0 && (
+              <p className="text-sm text-slate-500">No recommendations available right now.</p>
+            )}
+            {!crossSellsLoading && crossSells.map((p) => (
               <Link
                 key={p.id}
                 to={`/product/${p.id}`}

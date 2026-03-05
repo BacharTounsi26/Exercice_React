@@ -5,14 +5,23 @@ import Button from "@/shared/ui/Button";
 
 type Props = {
   slides: Slide[];
+  loading?: boolean;
 };
 
-export default function HeroSlider({ slides }: Props) {
+export default function HeroSlider({ slides, loading = false }: Props) {
   
   const { current, next, prev } = useHeroSlider(slides.length);
   
-  if (slides.length === 0)
-    return <div className="h-64 bg-slate-200 animate-pulse rounded"></div>;
+  if (loading)
+    return <div className="h-64 md:h-96 bg-slate-200 animate-pulse rounded"></div>;
+
+  if (slides.length === 0) {
+    return (
+      <div className="h-64 md:h-96 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center text-slate-500 text-sm">
+        No highlighted content available right now.
+      </div>
+    );
+  }
 
   
 

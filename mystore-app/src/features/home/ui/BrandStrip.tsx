@@ -3,9 +3,28 @@ import { imagePath } from "@/shared/utils/imagePath";
 
 type Props = {
   categories: Category[];
+  loading?: boolean;
 };
 
-export default function BrandStrip({ categories }: Props) {
+export default function BrandStrip({ categories, loading = false }: Props) {
+  if (loading) {
+    return (
+      <div className="py-10 grid grid-cols-2 md:grid-cols-5 gap-6">
+        {Array.from({ length: 5 }, (_, i) => (
+          <div key={i} className="h-24 md:h-28 bg-slate-100 rounded-lg animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
+  if (categories.length === 0) {
+    return (
+      <div className="py-10 text-center text-sm text-slate-500">
+        No brands available at the moment.
+      </div>
+    );
+  }
+
   return (
     <div className="py-10 grid grid-cols-2 md:grid-cols-5 gap-6">
       {categories.map((c) => (

@@ -30,10 +30,25 @@ export default function CartPage() {
   } = useCart();
 
   const [crossSells, setCrossSells] = useState<Product[]>([]);
+  const [crossSellsLoading, setCrossSellsLoading] = useState(true);
 
   // Charge quelques produits suggérés pour la section "Vous aimerez aussi"
   useEffect(() => {
-    fetchTopSellers().then((products) => setCrossSells(products.slice(0, 3))).catch(() => {});
+    let alive = true;
+    setCrossSellsLoading(true);
+
+    fetchTopSellers()
+      .then((products) => {
+        if (alive) setCrossSells(products.slice(0, 3));
+      })
+      .catch(() => {
+        if (alive) setCrossSells([]);
+      })
+      .finally(() => {
+        if (alive) setCrossSellsLoading(false);
+      });
+
+    return () => { alive = false; };
   }, []);
 
   if (status === "loading") return <CartSkeleton />;
@@ -89,6 +104,7 @@ export default function CartPage() {
               total={total}
               isSyncing={isSyncing}
               crossSells={crossSells}
+              crossSellsLoading={crossSellsLoading}
             />
           </div>
 

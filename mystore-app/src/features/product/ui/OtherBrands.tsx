@@ -7,6 +7,7 @@ import type { Category } from "@/shared/types/Category";
 interface OtherBrandsProps {
   categories:        Category[];
   currentCategoryId: string;
+  loading?:          boolean;
 }
 
 const PLACEHOLDER_BRAND =
@@ -15,13 +16,38 @@ const PLACEHOLDER_BRAND =
 const OtherBrands = memo(function OtherBrands({
   categories,
   currentCategoryId,
+  loading = false,
 }: OtherBrandsProps) {
   const others = useMemo(
     () => categories.filter((c) => c.id !== currentCategoryId),
     [categories, currentCategoryId]
   );
 
-  if (others.length === 0) return null;
+  if (loading) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+        <h3 className="font-display text-sm font-bold text-slate-700 uppercase tracking-widest mb-4">
+          Other Brands
+        </h3>
+        <div className="flex flex-col gap-2">
+          {Array.from({ length: 4 }, (_, i) => (
+            <div key={i} className="h-14 rounded-xl bg-slate-100 animate-pulse" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (others.length === 0) {
+    return (
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
+        <h3 className="font-display text-sm font-bold text-slate-700 uppercase tracking-widest mb-2">
+          Other Brands
+        </h3>
+        <p className="text-xs text-slate-500">No other brands available.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">

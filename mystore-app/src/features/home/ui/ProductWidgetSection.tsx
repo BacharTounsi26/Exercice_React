@@ -6,10 +6,11 @@ import Button from "@/shared/ui/Button";
 type Props = {
   title:      string;
   products:   Product[];
+  loading?:   boolean;
   onViewAll?: () => void;
 };
 
-export default function ProductWidgetSection({ title, products, onViewAll }: Props) {
+export default function ProductWidgetSection({ title, products, loading = false, onViewAll }: Props) {
   return (
     <div className="mb-8">
       {/* Header */}
@@ -42,10 +43,20 @@ export default function ProductWidgetSection({ title, products, onViewAll }: Pro
 
       {/* Liste de produits en scroll horizontal */}
       <div className="flex gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 px-2 md:px-0 pb-2">
-        {products.length === 0 && (
+        {loading && Array.from({ length: 3 }, (_, i) => (
+          <div key={`sk-${i}`} className="w-48 md:w-52 flex-shrink-0 rounded-lg border border-gray-200 bg-white overflow-hidden animate-pulse">
+            <div className="h-48 bg-slate-100" />
+            <div className="p-4 space-y-3">
+              <div className="h-3 bg-slate-100 rounded w-3/4" />
+              <div className="h-3 bg-slate-100 rounded w-1/2" />
+              <div className="h-4 bg-slate-100 rounded w-1/3" />
+            </div>
+          </div>
+        ))}
+        {!loading && products.length === 0 && (
           <p className="text-gray-400 text-sm py-4">No products to display.</p>
         )}
-        {products.map((p) => (
+        {!loading && products.map((p) => (
           <ProductWidgetItem key={p.id} product={p} />
         ))}
       </div>

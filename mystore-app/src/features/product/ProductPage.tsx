@@ -58,6 +58,7 @@ export default function ProductPage() {
   const { products: recentlyViewed, addProduct } = useRecentlyViewed();
   const { add }                              = useCart();   // ← useCart au lieu de dispatch brut
   const [categories, setCategories]          = useState<Category[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   useEffect(() => {
     if (!product) return;
@@ -66,7 +67,14 @@ export default function ProductPage() {
   }, [product?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    fetchCategories().then(setCategories).catch(() => {});
+    let alive = true;
+    setCategoriesLoading(true);
+    fetchCategories()
+      .then((data) => { if (alive) setCategories(data); })
+      .catch(() => {})
+      .finally(() => { if (alive) setCategoriesLoading(false); });
+
+    return () => { alive = false; };
   }, []);
 
   if (isLoading) return <ProductSkeleton />;
@@ -90,7 +98,11 @@ export default function ProductPage() {
           {recentFiltered.length > 0 && (
             <ProductWidgetSection title="Recently Viewed" products={recentFiltered} />
           )}
-          <OtherBrands categories={categories} currentCategoryId={product.categoryId} />
+          <OtherBrands
+            categories={categories}
+            currentCategoryId={product.categoryId}
+            loading={categoriesLoading}
+          />
         </aside>
 
         <div className="flex-1 min-w-0">

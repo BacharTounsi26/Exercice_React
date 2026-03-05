@@ -3,7 +3,7 @@ import { useCategories }  from "../hooks/useCategories";
 import Button             from "@/shared/ui/Button";
 
 export default function Footer() {
-  const { categories, loading: isLoading } = useCategories();
+  const { categories, loading: isLoading, error } = useCategories();
 
   return (
     <footer className="w-full bg-[#2f2f2f] text-slate-200">
@@ -36,6 +36,10 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
+          ) : error ? (
+            <p className="text-sm text-red-300">Unable to load categories.</p>
+          ) : categories.length === 0 ? (
+            <p className="text-sm text-slate-400">No categories available.</p>
           ) : (
             <ul className="space-y-3 text-slate-300 text-sm">
               {categories.map((cat) => (

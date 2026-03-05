@@ -1,26 +1,22 @@
 
 import { Outlet, useLocation }  from "react-router-dom";
-import { useState, useEffect }  from "react";
-import { fetchCategories }      from "@/features/layout/api/fetchCategories";
-import type { Category }        from "@/shared/types/Category";
+import { useEffect }  from "react";
+import { useCategories }        from "@/features/layout/hooks/useCategories";
 import Header                   from "./Header";
 import Navbar                   from "./Navbar";
 import Footer                   from "./Footer";
 
 export default function RootLayout() {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const { categories, loading: categoriesLoading, error: categoriesError } = useCategories();
   const location = useLocation();
-
-  // Chargement unique — stale-while-revalidate simplifié
-  useEffect(() => {
-    fetchCategories().then(setCategories).catch(console.error);
-  }, []);
 
   // Active category depuis l'URL : /shop/:categoryId → categoryId
   const activeCategoryId = (() => {
     const m = location.pathname.match(/^\/shop\/(.+)$/);
     return m ? m[1] : undefined;
   })();
+
+  const isShopPath = location.pathname === "/shop";
 
   // Remonte en haut à chaque changement de page
   useEffect(() => {
@@ -30,7 +26,13 @@ export default function RootLayout() {
   return (
     <div className="min-h-screen flex flex-col bg-surface">
       <Header />
-      <Navbar categories={categories} activeCategoryId={activeCategoryId} />
+      <Navbar
+        categories={categories}
+        loading={categoriesLoading}
+        error={categoriesError}
+        activeCategoryId={activeCategoryId}
+        isShopPath={isShopPath}
+      />
       <main className="flex-1">
         <Outlet />
       </main>

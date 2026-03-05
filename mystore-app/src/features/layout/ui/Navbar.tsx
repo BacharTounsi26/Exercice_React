@@ -5,11 +5,21 @@ import type { Category }   from "@/shared/types/Category";
 
 type NavbarProps = {
   categories:        Category[];
+  loading?:          boolean;
+  error?:            string | null;
   activeCategoryId?: string;     
+  isShopPath?:       boolean;
   className?:        string;
 };
 
-const Navbar = memo(function Navbar({ categories, activeCategoryId, className = "" }: NavbarProps) {
+const Navbar = memo(function Navbar({
+  categories,
+  loading = false,
+  error = null,
+  activeCategoryId,
+  isShopPath = false,
+  className = "",
+}: NavbarProps) {
   const base   = "rounded px-3 py-1.5 text-[13px] font-medium tracking-wide transition-colors";
   const active = "bg-indigo-600 text-white shadow-sm";
   const idle   = "text-slate-600 hover:text-slate-900 hover:bg-slate-100";
@@ -27,7 +37,12 @@ const Navbar = memo(function Navbar({ categories, activeCategoryId, className = 
           </li>
 
           {/* Categories */}
-          {categories.map((c) => (
+          {loading && Array.from({ length: 5 }, (_, i) => (
+            <li key={`sk-${i}`}>
+              <span className="inline-block w-24 h-8 rounded bg-slate-200 animate-pulse" />
+            </li>
+          ))}
+          {!loading && !error && categories.map((c) => (
             <li key={c.id}>
               <Link
                 to={`/shop/${c.id}`}
@@ -37,12 +52,22 @@ const Navbar = memo(function Navbar({ categories, activeCategoryId, className = 
               </Link>
             </li>
           ))}
+          {!loading && error && (
+            <li>
+              <span className="text-xs text-red-600 px-2">Unable to load categories</span>
+            </li>
+          )}
+          {!loading && !error && categories.length === 0 && (
+            <li>
+              <span className="text-xs text-slate-500 px-2">No categories available</span>
+            </li>
+          )}
 
           {/* All Products */}
           <li className="ml-auto">
             <Link
               to="/shop"
-              className={`${base} ${!activeCategoryId && window.location.pathname === "/shop" ? active : idle}`}
+              className={`${base} ${!activeCategoryId && isShopPath ? active : idle}`}
             >
               ALL PRODUCTS
             </Link>
