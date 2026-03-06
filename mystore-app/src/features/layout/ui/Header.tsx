@@ -4,7 +4,7 @@ import { useNavigate, Link, useSearchParams, useLocation } from "react-router-do
 import { useAppSelector }              from "@/shared/hooks/useAppStore";
 import Button                          from "@/shared/ui/Button";
 import { sanitizeText }                from "@/shared/utils/sanitizeInput";
-import { selectCartTotal, selectCartCount } from "@/features/cart/state/Selectors";
+import { selectCartTotal, selectCartCount } from "@/features/cart/state/selectors";
 
 const Header = memo(function Header() {
   const [q, setQ]      = useState("");

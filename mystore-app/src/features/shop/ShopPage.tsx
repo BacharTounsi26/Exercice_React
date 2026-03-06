@@ -17,7 +17,7 @@ export default function ShopPage() {
     products, totalCount, totalPages, isLoading, error,
     searchQuery, sortOption, currentPage,
     setSearchQuery, handleSort, handlePageChange,
-  } = useShop(categoryId);
+  } = useShop(categoryId, qParam);
 
   // Sync avec ?q= venant de la barre de recherche globale du Header
   useEffect(() => {

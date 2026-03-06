@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createOrder }   from "../api/createOrder";
 import { deleteCart }    from "@/features/cart/api/deleteCart";
 import { resetCart }     from "@/features/cart/state/cartSlice";
+import { initCart }      from "@/features/cart/state/cartSlice";
 import type { Cart } from "@/shared/types/Cart";
 import type { CheckoutFormData } from "@/shared/types/CheckoutFormData";
 import type { Order } from "@/shared/types/Order";
@@ -28,7 +29,9 @@ export const submitOrder = createAsyncThunk<
   async ({ cart, form }, { dispatch }) => {
     const order = await createOrder(cart, form);
     await deleteCart(cart.id);
-    dispatch(resetCart());          // remet le cartSlice à zéro
+    dispatch(resetCart());
+    // Prepare a fresh server cart so users can add items again without refresh.
+    await dispatch(initCart());
     return order;
   }
 );

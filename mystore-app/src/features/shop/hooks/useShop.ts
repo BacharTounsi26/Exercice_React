@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { fetchProducts }                    from "../api/fetchProducts";
 import type { Product }                     from "@/shared/types/Product";
 
@@ -32,11 +32,13 @@ export function useShop(categoryId: string | undefined, initialQuery = "") {
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [sortOption,  setSortOption]  = useState<SortOption>("");
   const [currentPage, setCurrentPage] = useState(1);
+  const requestSeqRef = useRef(0);
 
   const totalPages = Math.ceil(totalCount / LIMIT) || 0;
 
   // ── Fetch ──────────────────────────────────────────────────────────────────
   const load = useCallback(async () => {
+    const requestSeq = ++requestSeqRef.current;
     setIsLoading(true);
     setError(null);
     try {
@@ -48,13 +50,16 @@ export function useShop(categoryId: string | undefined, initialQuery = "") {
         _limit: LIMIT,
         ...sortParams,
       });
+      if (requestSeq !== requestSeqRef.current) return;
       setProducts(result.products);
       setTotalCount(result.totalCount);
     } catch (e) {
+      if (requestSeq !== requestSeqRef.current) return;
       setError(e instanceof Error ? e.message : "Unexpected error.");
       setProducts([]);
       setTotalCount(0);
     } finally {
+      if (requestSeq !== requestSeqRef.current) return;
       setIsLoading(false);
     }
   }, [categoryId, searchQuery, sortOption, currentPage]);

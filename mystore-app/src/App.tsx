@@ -1,12 +1,12 @@
 
 import { useEffect }             from "react";
 import { RouterProvider }        from "react-router-dom";
-import { Provider }              from "react-redux";
 import { store }                 from "./app/store";
 import { initCart }              from "./features/cart/state/cartSlice";
 import { router }                from "./app/routes";
 import { useBackendAvailability } from "@/shared/hooks/useBackendAvailability";
 import BackendUnavailablePage from "@/shared/ui/BackendUnavailablePage";
+import { AppProviders } from "./app/providers";
 
 function AppWithStore() {
   const { isChecking, isAvailable, retry } = useBackendAvailability();
@@ -34,8 +34,8 @@ function AppWithStore() {
 
 export default function App() {
   return (
-    <Provider store={store}>
+    <AppProviders>
       <AppWithStore />
-    </Provider>
+    </AppProviders>
   );
 }

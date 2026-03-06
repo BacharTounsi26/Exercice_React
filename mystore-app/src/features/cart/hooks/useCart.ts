@@ -18,7 +18,7 @@ import {
   selectCart,
   selectCartStatus,
   selectCartError,
-}                                from "../state/Selectors";
+}                                from "../state/selectors";
 import type { Product }          from "@/shared/types/Product";
 
 export function useCart() {

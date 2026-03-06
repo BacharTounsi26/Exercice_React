@@ -8,7 +8,7 @@ import type { Cart } from "@/shared/types/Cart";
 import type { CartItem } from "@/shared/types/CartItem";
 import type { Product } from "@/shared/types/Product";
 
-const TAX_RATE    = 0.20;       // 20%
+const TAX_RATE    = 0.20;       
 const STORAGE_KEY = "cart_id";
 
 // ── Helpers ────────────────────────────────────────────────────────────────

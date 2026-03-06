@@ -1,13 +1,11 @@
-// src/features/checkout/ui/AddressForm.tsx
-// Bloc formulaire d'adresse réutilisable (Billing et Shipping utilisent le même).
-// Entièrement contrôlé — reçoit values + onChange du parent.
+
 
 import { memo }             from "react";
 import type { Civility } from "@/shared/types/Civility";
 import type { Address } from "@/shared/types/Address";
 
 interface AddressFormProps {
-  prefix:   string;                      // "billing" | "shipping" (pour les ids HTML)
+  prefix:   string;                      
   values:   Partial<Address>;
   onChange: (field: keyof Address, value: string) => void;
   errors:   Partial<Record<keyof Address, string>>;

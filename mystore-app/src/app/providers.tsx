@@ -1,12 +1,15 @@
- import { Provider } from "react-redux";
-import { RouterProvider } from "react-router-dom";
+import type { ReactNode } from "react";
+import { Provider } from "react-redux";
 import { store } from "./store";
-import { router } from "./routes";
 
-export function AppProviders() {
+type AppProvidersProps = {
+  children: ReactNode;
+};
+
+export function AppProviders({ children }: AppProvidersProps) {
   return (
     <Provider store={store}>
-      <RouterProvider router={router} />
+      {children}
     </Provider>
   );
 }
